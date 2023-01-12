@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+  font-size:18px;
+  overflow-x:hidden;
+  margin:0;
+}
+div.container{
+  display:flex;
+  width:100vw;
+  margin-left:-15px;
+}
+div.col{
+  flex:1;
+  margin-left:30px;
+}
+input{
+  width:100%;
+  height:30px;
+}
+input[type="submit"]{
+  background:rgb(34, 2, 138);
+  padding:10px 0;
+  border-radius:20px;
+  color:#fff;
+}
+textarea{
+  width:100%;
+  margin:20px 0;
+}
+input:focus,textarea:focus{
+  box-shadow:none;
+  outline:none;
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+  <div class="col">
+    <h3>Encrypt Me</h3>
+    <form id="encryptForm">
+  <input type="text" name="key" placeholder="key">
+  <br>
+  <textarea name="message" id="encrypted" cols="30" rows="10" placeholder="Message to encrypt"></textarea>
+  <br>
+  <textarea name="message" id="en-message" cols="30" rows="10" placeholder="Result"></textarea>
+  <br>
+      <input type="submit" value="Encrypt">
+</form></div>
+<div class="col">
+      <h3>Decrypt Me</h3>
+    <form id="decryptForm">
+  <input type="text" name="key" placeholder="key">
+  <br>
+  <textarea name="encrypted" id="encrypted" cols="30" rows="10" placeholder="Encrypted message"></textarea>
+  <br>
+  <textarea name="message" id="de-message" cols="30" rows="10" placeholder="Result"></textarea>
+  <br>
+      <input type="submit" value="Decrypt">
+</form>
+  </div>
+</div>
+<script>
+ var enForm = document.querySelector("#encryptForm")
+
+enForm.addEventListener("submit",(e)=>{
+  e.preventDefault();
+  let formData = new FormData(enForm);
+ let key = formData.get("key")
+ let message = formData.get("message")
+  let msg = encryptMe(message,key);
+  document.querySelector("#en-message").value = msg;
+ 
+}) 
+
+ var deForm = document.querySelector("#decryptForm")
+
+deForm.addEventListener("submit",(e)=>{
+  e.preventDefault();
+ let formData = new FormData(deForm);
+ let key = formData.get("key")
+ let encrypted = formData.get("encrypted")
+  let msg = decryptMe(encrypted,key);
+  document.querySelector("#de-message").value = msg; 
+}) 
+ 
+function encryptMe(mes,key) {
+            return CryptoJS.AES.encrypt(mes,key);
+        };
+
+function decryptMe(mes,key) {
+            var bytes = CryptoJS.AES.decrypt(mes, key);
+            return bytes.toString(CryptoJS.enc.Utf8);
+        };
+    </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
+</body>
+</html>
